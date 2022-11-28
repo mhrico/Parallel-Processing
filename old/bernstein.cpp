@@ -9,17 +9,17 @@ int main()
     string buffer;
 
     ifstream MyReadFile("in.txt");
-    
+
     int n = 0;
 
-    while (getline (MyReadFile, buffer)) 
+    while (getline (MyReadFile, buffer))
     {
         s[n] = buffer;
         n++;
     }
 
-    MyReadFile.close(); 
-    
+    MyReadFile.close();
+
     for(int i=0; i<n; i++)
     {
         out[i]+=s[i][0];
@@ -32,106 +32,112 @@ int main()
         }
     }
 
+    for(int i = 0; i < 5; i++)
+    {
+        cout << in[i] << " ";
+    }
+
+    cout << endl;
     set <char> outset;
     cout << "Parallelable:" << endl;
 
-    for(int k=0; k<n-1; k++)
+    for(int i=0; i<n-1; i++)
     {
-        for(int i=k+1; i<n; i++)
+        for(int j=i+1; j<n; j++)
         {
             int c=0;
-            int l=in[k].size()+1;
+            int sz=in[i].size()+1;
 
-            for(int j=0; j<in[k].size(); j++)
+            for(int k=0; k<in[i].size(); k++)
             {
-                outset.insert(in[k][j]);
+                outset.insert(in[i][k]);
+            }
+
+            outset.insert(out[j][0]);
+
+            if(outset.size()<sz)
+            {
+                c++;
+            }
+
+            outset.clear();
+
+            sz=in[j].size()+1;
+
+            for(int k=0; k<in[j].size(); k++)
+            {
+                outset.insert(in[j][k]);
             }
 
             outset.insert(out[i][0]);
-            
-            if(outset.size()<l)
+
+            if(outset.size()<sz)
             {
                 c++;
             }
 
             outset.clear();
 
-            l=in[i].size()+1;
-
-            for(int j=0; j<in[i].size(); j++)
-            {
-                outset.insert(in[i][j]);
-            }
-
-            outset.insert(out[k][0]);
-            
-            if(outset.size()<l)
-            {
-                c++;
-            }
-
-            outset.clear();
-
-            if(out[k][0]==out[i][0])
+            if(out[i][0]==out[j][0])
             {
                 c++;
             }
 
             if(c==0)
             {
-                cout << "P" << k+1 << " | P" << i+1 << endl;
+                cout << "P" << i+1 << " | P" << j+1 << endl;
             }
 
         }
     }
 
     cout << "Dependencies: " << endl;
-    
-    for(int k=0; k<n-1; k++)
+
+    for(int i=0; i<n-1; i++)
     {
-        for(int i=k+1; i<n; i++)
+        for(int j=i+1; j<n; j++)
         {
             int c=0;
-            int l=in[k].size()+1;
+            int sz=in[i].size()+1;
 
-            for(int j=0; j<in[k].size(); j++)
+            for(int k=0; k<in[i].size(); k++)
             {
-                outset.insert(in[k][j]);
+                outset.insert(in[i][k]);
+            }
+
+            outset.insert(out[j][0]);
+
+            if(outset.size()<sz)
+            {
+                c++;
+            }
+
+            outset.clear();
+
+            sz=in[j].size()+1;
+
+            for(int k=0; k<in[j].size(); k++)
+            {
+                outset.insert(in[j][k]);
             }
 
             outset.insert(out[i][0]);
-            
-            if(outset.size()<l)
+
+            if(outset.size()<sz)
             {
                 c++;
             }
 
             outset.clear();
 
-            l=in[i].size()+1;
-
-            for(int j=0; j<in[i].size(); j++)
-            {
-                outset.insert(in[i][j]);
-            }
-
-            outset.insert(out[k][0]);
-            
-            if(outset.size()<l)
-            {
-                c++;
-            }
-
-            outset.clear();
-
-            if(out[k][0]==out[i][0])
+            if(out[i][0]==out[j][0])
             {
                 c++;
             }
 
             if(c!=0)
             {
-                cout << "P" << k+1 << " -> P" << i+1 << endl;
+                cout << "P" << i+1 << " -> P" << j+1 << endl;
             }
         }
     }
